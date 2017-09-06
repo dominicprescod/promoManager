@@ -53,6 +53,7 @@ var express                 = require("express"),
                 var activeUser = result.rows;
                 activeUser = activeUser.filter((v,i,a)=> v.active );
                 if(activeUser.length){
+                    client.end();
                     req.logout();
                     res.redirect("/");
                 } else {
@@ -86,6 +87,7 @@ var express                 = require("express"),
                     }
             });
         }
+        client.end();
         req.logout();
         res.redirect("/");
     });
@@ -93,8 +95,6 @@ var express                 = require("express"),
  
     http.listen(port,()=>{
         console.log("listening on port: "+port);
-        // console.log(process.env)
-        // connecting to PSQL
         client.connect();
     });
 

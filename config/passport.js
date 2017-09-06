@@ -34,8 +34,10 @@ module.exports = function (passport) {
         passport.deserializeUser(function (id, done) {
             client.query(psql('users').where("id", id).toString(), (err, res)=>{
                 if(err){
+                    client.end();
                     done(null, false);
                 } else {
+                    client.end();
                     done(null,res.rows[0]);
                 }
             });
@@ -61,9 +63,11 @@ module.exports = function (passport) {
                     if (b === valid) {
                         client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
                             if(err){
+                                client.end();
                                 done(null, false);
                             } else {
                                 if(res.rows.length){
+                                    client.end();
                                     // found the user sending the first element in the row results.
                                     done(null, res.rows[0]);
                                 } else {
@@ -76,15 +80,20 @@ module.exports = function (passport) {
                                     // Insert the new user to the DB
                                     client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes)=> {
                                         if(nErr){
+                                            client.end();
                                             done(null, false);
                                         } else {
+                                            client.end();
                                             done(null, newUser);
                                         }
                                     });
                                 }
                             }
                         });
-                    } else return done(null, false)
+                    } else {
+                        client.end();
+                        return done(null, false);
+                    }
                 });
             }));
 };
