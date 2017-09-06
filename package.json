@@ -1,0 +1,27 @@
+{
+  "name": "soap",
+  "version": "1.0.0",
+  "description": "Sends soap requests for current promotions. Monitors editing activity",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Dominic Prescod",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "connect-pg-simple": "^4.2.1",
+    "cookie-parser": "^1.4.3",
+    "elasticsearch": "^13.3.1",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "knex": "^0.13.0",
+    "passport": "^0.4.0",
+    "passport-google-auth": "^1.0.2",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.3.0",
+    "socket.io": "^2.0.3"
+  }
+}
