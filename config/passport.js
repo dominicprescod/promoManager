@@ -32,10 +32,13 @@ module.exports = function (passport) {
         });
         // used to deserialize the user
         passport.deserializeUser(function (id, done) {
-            client.query(psql('users').where("id", id).toString())
-                .on('row', function (row) {
-                    done(null, row);
-                });
+            client.query(psql('users').where("id", id).toString(), (err, res)=>{
+                if(err){
+                    done(null, false);
+                } else {
+                    done(null,res.rows[0]);
+                }
+            });
         });
 
         // =========================================================================
@@ -56,25 +59,32 @@ module.exports = function (passport) {
                     b = b.join('').replace(/,/g, '');
                     var newUser = {};
                     if (b === valid) {
-                        client.query(psql('users').where("email", profile.emails[0].value).toString())
-                            .on('row', function (row) {
-                                done(null, row);
-                            }).on('end', function (result) {
-                                if (!result.rowCount) {
+                        client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
+                            if(err){
+                                done(null, false);
+                            } else {
+                                if(res.rows.length){
+                                    // found the user sending the first element in the row results.
+                                    done(null, res.rows[0]);
+                                } else {
+                                    // did not find the user...creating a new user.
                                     newUser['id'] = guid();
                                     newUser['email'] = profile.emails[0].value;
                                     newUser['first_name'] = profile.name.givenName;
                                     newUser['last_name'] = profile.name.familyName;
                                     newUser['active'] = false;
                                     // Insert the new user to the DB
-                                    client.query(psql.insert(newUser).into('users').toString())
-                                        .on('end', function (result) {
-                                            done(null, newUser)
-                                        });
+                                    client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes)=> {
+                                        if(nErr){
+                                            done(null, false);
+                                        } else {
+                                            done(null, newUser);
+                                        }
+                                    });
                                 }
-                            });
+                            }
+                        });
                     } else return done(null, false)
                 });
             }));
-    // });
 };
