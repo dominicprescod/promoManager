@@ -18,7 +18,6 @@ var express                 = require("express"),
     port                    = process.env.PORT || 3000;
 
     const {Pool, Client} = require('pg');
-
     const client = new Client({
         user: creds.soap.psql.userName,
         password: creds.soap.psql.password,
