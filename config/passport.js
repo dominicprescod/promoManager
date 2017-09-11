@@ -25,16 +25,17 @@ module.exports = function (passport) {
         database: 'soap',
         port: 5432
     });
-    client.connect();
+    
     
         passport.serializeUser(function (user, done) {
             done(null, user.id);
         });
         // used to deserialize the user
         passport.deserializeUser(function (id, done) {
+            client.connect();
             client.query(psql('users').where("id", id).toString(), (err, res)=>{
                 if(err){
-                    client.end();
+                   client.end();
                     done(null, false);
                 } else {
                     client.end();
@@ -61,6 +62,7 @@ module.exports = function (passport) {
                     b = b.join('').replace(/,/g, '');
                     var newUser = {};
                     if (b === valid) {
+                        client.connect();
                         client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
                             if(err){
                                 client.end();

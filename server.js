@@ -42,51 +42,63 @@ var express                 = require("express"),
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
     // the callback after google has authenticated the user
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+        client.connect();
         client.query(psql("users").toString(),(err, result)=>{
             if(err){
                 console.log("error getting all users");
                 console.log(err);
+                client.end();
             } else {
                 console.log("success getting all users");
-                console.log(result);
                 var activeUser = result.rows;
                 activeUser = activeUser.filter((v,i,a)=> v.active );
+                console.log(activeUser);
                 if(activeUser.length){
+                    console.log("activeUser.length");
                     client.end();
                     req.logout();
+                    // client.end();
                     res.redirect("/");
                 } else {
+                    console.log("did not find an active user");
                     client.query(psql("users").update('active', true).where('id', req.user.id).toString(),(uErr, uRes)=> {
                         if(uErr){
                             console.log('problem updating user to active user');
                             console.log(uErr);
+                            client.end();
                         } else {
                             req.user.active = true;
                             console.log('success making user active');
                             console.log(uRes);
+                            client.end();
                             res.redirect("/login.html");
                         }
                     });
                 }
             }
         });
+        
     });
 
     app.get("/logout",(req, res)=>{
+        console.log('inside logout');
         if(req.user.active){
+            // client.connect();
             client.query(
                 psql("users").update("active", false).where("id", req.user.id).toString(), 
                 (err, res)=>{
                     if(err){
                         console.log('problem setting user to inactive');
                         console.log(err);
+                        client.end();
                     } else {
-                        console.log("success setting user to inactive");
+                        console.log("success setting user to inactive");                        
                         console.log(res);
+                        client.end();
                     }
             });
         }
-        client.end();
+        // await client.end();
         req.logout();
         res.redirect("/");
     });
@@ -99,7 +111,7 @@ var express                 = require("express"),
  
     http.listen(port,()=>{
         console.log("listening on port: "+port);
-        client.connect();
+        // client.connect();
     });
 
 module.exports = app;
