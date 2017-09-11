@@ -4,6 +4,7 @@ var express                 = require("express"),
     cookieParser            = require('cookie-parser'),
     passport                = require('passport'),
     bodyParser              = require('body-parser'),
+    disconnect              = require("./disconnect.js"),
     ELASTIC                 = require('elasticsearch'),
     creds                   = require(process.env.HOME+"/.creds/node/credentials.js"),
     dbURL                   = process.env.DATABASE_URL || 'postgres://localhost:5432/soap',
@@ -42,63 +43,72 @@ var express                 = require("express"),
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
     // the callback after google has authenticated the user
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-        client.connect();
-        client.query(psql("users").toString(),(err, result)=>{
-            if(err){
-                console.log("error getting all users");
-                console.log(err);
-                client.end();
-            } else {
-                console.log("success getting all users");
-                var activeUser = result.rows;
-                activeUser = activeUser.filter((v,i,a)=> v.active );
-                console.log(activeUser);
-                if(activeUser.length){
-                    console.log("activeUser.length");
-                    client.end();
-                    req.logout();
-                    // client.end();
-                    res.redirect("/");
-                } else {
-                    console.log("did not find an active user");
-                    client.query(psql("users").update('active', true).where('id', req.user.id).toString(),(uErr, uRes)=> {
-                        if(uErr){
-                            console.log('problem updating user to active user');
-                            console.log(uErr);
-                            client.end();
+        client.connect()
+            .then(()=>{
+                client.query(psql("users").toString(), (err, result) => {
+                    if (err) {
+                        console.log("error getting all users");
+                        console.log(err);
+                        disconnect(client);
+                    } else {
+                        console.log("success getting all users");
+                        var activeUser = result.rows;
+                        activeUser = activeUser.filter((v, i, a) => v.active);
+                        console.log(activeUser);
+                        if (activeUser.length) {
+                            console.log("activeUser.length");
+                            disconnect(client);
+                            req.logout();
+                            // disconnect(client);
+                            res.redirect("/");
                         } else {
-                            req.user.active = true;
-                            console.log('success making user active');
-                            console.log(uRes);
-                            client.end();
-                            res.redirect("/login.html");
+                            console.log("did not find an active user");
+                            client.query(psql("users").update('active', true).where('id', req.user.id).toString(), (uErr, uRes) => {
+                                if (uErr) {
+                                    console.log('problem updating user to active user');
+                                    console.log(uErr);
+                                    disconnect(client);
+                                } else {
+                                    req.user.active = true;
+                                    console.log('success making user active');
+                                    console.log(uRes);
+                                    disconnect(client);
+                                    res.redirect("/login.html");
+                                }
+                            });
                         }
-                    });
-                }
-            }
-        });
-        
+                    }
+                });
+            })
+            .catch((connectError)=>{
+                console.log("cannot connect to PSQL");
+                console.log(connectError.stack);
+            });
     });
 
     app.get("/logout",(req, res)=>{
         console.log('inside logout');
+        console.log(req.user);
         if(req.user.active){
-            // client.connect();
-            client.query(
-                psql("users").update("active", false).where("id", req.user.id).toString(), 
-                (err, res)=>{
-                    if(err){
-                        console.log('problem setting user to inactive');
-                        console.log(err);
-                        client.end();
-                    } else {
-                        console.log("success setting user to inactive");                        
-                        console.log(res);
-                        client.end();
-                    }
-            });
+            console.log("inside req.user.active")
+            client.connect()
+                .then(()=> {
+                    client.query(
+                        psql("users").update("active", false).where("id", req.user.id).toString(),
+                        (err, res) => {
+                            if (err) {
+                                console.log('problem setting user to inactive');
+                                console.log(err);
+                                disconnect(client);
+                            } else {
+                                console.log("success setting user to inactive");
+                                console.log(res);
+                                disconnect(client);
+                            }
+                        });
+                })
+                .catch(e => console.log("problem connecting\n"+e.stack));
         }
-        // await client.end();
         req.logout();
         res.redirect("/");
     });

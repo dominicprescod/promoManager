@@ -1,5 +1,6 @@
 var passport            = require("passport-local").Strategy,
     guid                = require("../guid.js"),
+    disconnect          = require("../disconnect.js"),
     creds               = require(process.env.HOME+"/.creds/node/credentials.js"),
     dbURL               = process.env.DATABASE_URL || 'postgres://localhost:5432/soap',
     searchPath          = process.env.SEARCH_PATH || 'soap/public',
@@ -35,10 +36,10 @@ module.exports = function (passport) {
             client.connect();
             client.query(psql('users').where("id", id).toString(), (err, res)=>{
                 if(err){
-                   client.end();
+                   disconnect(client);
                     done(null, false);
                 } else {
-                    client.end();
+                    disconnect(client);
                     done(null,res.rows[0]);
                 }
             });
@@ -65,11 +66,11 @@ module.exports = function (passport) {
                         client.connect();
                         client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
                             if(err){
-                                client.end();
+                                disconnect(client);
                                 done(null, false);
                             } else {
                                 if(res.rows.length){
-                                    client.end();
+                                    disconnect(client);
                                     // found the user sending the first element in the row results.
                                     done(null, res.rows[0]);
                                 } else {
@@ -82,10 +83,10 @@ module.exports = function (passport) {
                                     // Insert the new user to the DB
                                     client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes)=> {
                                         if(nErr){
-                                            client.end();
+                                            disconnect(client);
                                             done(null, false);
                                         } else {
-                                            client.end();
+                                            disconnect(client);
                                             done(null, newUser);
                                         }
                                     });
@@ -93,7 +94,7 @@ module.exports = function (passport) {
                             }
                         });
                     } else {
-                        client.end();
+                        disconnect(client);
                         return done(null, false);
                     }
                 });
