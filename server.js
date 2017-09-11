@@ -29,15 +29,17 @@ var express                 = require("express"),
 
     // Middleware
     // =============================================================================
-    app.use(cookieParser())
+    
+    require('./config/passport.js')(passport);
+    app.use(cookieParser());
     app.use(express.static('public'));
     app.use(bodyParser.json({ limit: '50mb' }));
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     // required for passport
-    app.use(session({secret: process.env.FOO_COOKIE_SECRET || "ilovescotchscotchyscotchscotch"}));
+    app.use(session({secret: "ilovescotchscotchyscotchscotch"}));
     app.use(passport.initialize());
     app.use(passport.session());
-    require('./config/passport.js')(passport);
+    
 
     // Google OAuth2
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -117,6 +119,19 @@ var express                 = require("express"),
         const stuff = require("./xml.js")(req.params.reqres);
         console.log(stuff);
         res.send(stuff);
+    });
+
+// getting the cookie from the client side
+    app.get('/api/user_data', function (req, res) {
+
+        if (req.user === undefined) {
+            // The user is not logged in
+            res.json({});
+        } else {
+            res.json({
+                username: req.user
+            });
+        }
     });
  
     http.listen(port,()=>{

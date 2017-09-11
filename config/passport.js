@@ -1,4 +1,4 @@
-var passport            = require("passport-local").Strategy,
+var passport            = require("passport"),
     guid                = require("../guid.js"),
     disconnect          = require("../disconnect.js"),
     creds               = require(process.env.HOME+"/.creds/node/credentials.js"),
@@ -15,7 +15,7 @@ var passport            = require("passport-local").Strategy,
 
 
 
-module.exports = function (passport) {
+module.exports = (passport) => {
     // pg.connect(dbURL, function (err, client) {
     //     if (err) throw err;
     const { Pool, Client } = require('pg');
@@ -29,20 +29,28 @@ module.exports = function (passport) {
     
     
         passport.serializeUser(function (user, done) {
+            console.log("inside serializeUser");
+            // console.log(user);
             done(null, user.id);
         });
         // used to deserialize the user
         passport.deserializeUser(function (id, done) {
-            client.connect();
-            client.query(psql('users').where("id", id).toString(), (err, res)=>{
-                if(err){
-                   disconnect(client);
-                    done(null, false);
-                } else {
-                    disconnect(client);
-                    done(null,res.rows[0]);
-                }
-            });
+            console.log("inside deserializedUser");
+            // client.connect()
+            // .then(()=> {
+                client.query(psql('users').where("id", id).toString(), (err, res) => {
+                    if (err) {
+                        console.log("problem deserialize query")
+                        // disconnect(client);
+                        done(null, false);
+                    } else {
+                        console.log("success with deserialize query")
+                        // disconnect(client);
+                        done(null, res.rows[0]);
+                    }
+                });
+            // })
+            // .catch(e => console.log("deserializeUser prob connecting\n "+e.stack)); 
         });
 
         // =========================================================================
@@ -94,6 +102,7 @@ module.exports = function (passport) {
                             }
                         });
                     } else {
+                        console.log("not valid email: \n"+b)
                         disconnect(client);
                         return done(null, false);
                     }
