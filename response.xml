@@ -1,0 +1,27 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <AddPromotionResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+         </Status>
+         <PromotionDetail RedemptionType="INSTANT_PROMOCODE">
+            <PromoId>5009672</PromoId>
+            <PromoName>June_Codes_POPSQ_239</PromoName>
+            <Description>June_Codes_POPSQ_239</Description>
+            <Status>P</Status>
+            <TriggeringEvent>RECHARGE</TriggeringEvent>
+            <BrChannel>BR_US</BrChannel>
+            <QualifyingAmount>500</QualifyingAmount>
+            <QualifyingAmountMax>5000</QualifyingAmountMax>
+            <RewardMethod>BONUS</RewardMethod>
+            <RewardValueType>PERCENT</RewardValueType>
+            <RewardValue>20</RewardValue>
+            <PromoClass>14078</PromoClass>
+            <ModifiedBy>aklock</ModifiedBy>
+            <ModifiedDateStr>2017.05.26 at 12:10:00 PM EDT</ModifiedDateStr>
+            <PromoCodeSource>STATIC</PromoCodeSource>
+         </PromotionDetail>
+      </AddPromotionResponse>
+   </S:Body>
+</S:Envelope>

@@ -1,0 +1,447 @@
+Code 1 for UAT: 7JNBBQ
+
+
+
+AddImmediatePromotion
+=========================
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prom="http://psp.idt.net/PromoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prom:AddImmediatePromotionRequest>
+         <prom:Control>
+         <prom:User>aklock</prom:User>
+         <prom:UserType>SOAP</prom:UserType>
+         </prom:Control>
+         <prom:Params>
+            <prom:PromoName>June_Codes_POPSQ_239</prom:PromoName>
+            <prom:Description>June_Codes_POPSQ_239</prom:Description>
+            <prom:BrChannel>BR_US</prom:BrChannel>
+            <prom:TriggeringEvent>RECHARGE</prom:TriggeringEvent>
+            <prom:QualifyingAmount>500</prom:QualifyingAmount>
+            <prom:PromoCodeSource>STATIC</prom:PromoCodeSource>
+            <prom:RewardMethod>BONUS</prom:RewardMethod>
+            <prom:RewardValueType>PERCENT</prom:RewardValueType>
+            <prom:RewardValue>20</prom:RewardValue>
+            <prom:QualifyingAmountMax>5000</prom:QualifyingAmountMax>
+            <prom:PromoClass>14078</prom:PromoClass>
+            </prom:Params>
+      </prom:AddImmediatePromotionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Response
+++++++++
+
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <AddPromotionResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+         </Status>
+         <PromotionDetail RedemptionType="INSTANT_PROMOCODE">
+            <PromoId>5009672</PromoId>
+            <PromoName>June_Codes_POPSQ_239</PromoName>
+            <Description>June_Codes_POPSQ_239</Description>
+            <Status>P</Status>
+            <TriggeringEvent>RECHARGE</TriggeringEvent>
+            <BrChannel>BR_US</BrChannel>
+            <QualifyingAmount>500</QualifyingAmount>
+            <QualifyingAmountMax>5000</QualifyingAmountMax>
+            <RewardMethod>BONUS</RewardMethod>
+            <RewardValueType>PERCENT</RewardValueType>
+            <RewardValue>20</RewardValue>
+            <PromoClass>14078</PromoClass>
+            <ModifiedBy>aklock</ModifiedBy>
+            <ModifiedDateStr>2017.05.26 at 12:10:00 PM EDT</ModifiedDateStr>
+            <PromoCodeSource>STATIC</PromoCodeSource>
+         </PromotionDetail>
+      </AddPromotionResponse>
+   </S:Body>
+</S:Envelope>
+
+UpdatePromotion
+===============
+
+Request
++++++++
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prom="http://psp.idt.net/PromoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prom:UpdatePromotionRequest>
+         <prom:Control>
+            <prom:User>aklock</prom:User>
+            <prom:UserType>SOAP</prom:UserType>
+         </prom:Control>
+         <prom:Params>
+            <prom:PromoId>5009672</prom:PromoId>
+            <prom:Status>A</prom:Status>
+            <prom:PromoClass>14078</prom:PromoClass>
+             <prom:FilterEnabled>N</prom:FilterEnabled>
+         </prom:Params>
+      </prom:UpdatePromotionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Response
+++++++++
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <UpdatePromotionResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+         </Status>
+         <PromotionDetail RedemptionType="INSTANT_PROMOCODE">
+            <PromoId>5009672</PromoId>
+            <PromoName>June_Codes_POPSQ_239</PromoName>
+            <Description>June_Codes_POPSQ_239</Description>
+            <Status>A</Status>
+            <TriggeringEvent>RECHARGE</TriggeringEvent>
+            <BrChannel>BR_US</BrChannel>
+            <QualifyingAmount>500</QualifyingAmount>
+            <QualifyingAmountMax>5000</QualifyingAmountMax>
+            <RewardMethod>BONUS</RewardMethod>
+            <RewardValueType>PERCENT</RewardValueType>
+            <RewardValue>20</RewardValue>
+            <PromoClass>14078</PromoClass>
+            <FilterEnabled>N</FilterEnabled>
+            <ModifiedBy>aklock</ModifiedBy>
+            <ModifiedDateStr>2017.05.26 at 01:42:15 PM EDT</ModifiedDateStr>
+            <PromoCodeSource>STATIC</PromoCodeSource>
+         </PromotionDetail>
+      </UpdatePromotionResponse>
+   </S:Body>
+</S:Envelope>
+
+
+AddImmediatePromoCampaign
+==========================
+
+Request
+++++++++
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prom="http://psp.idt.net/PromoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prom:AddImmediatePromoCampaignRequest>
+         <prom:Control>
+            <prom:User>bvaishna</prom:User>
+            <prom:UserType>SOAP</prom:UserType>
+         </prom:Control>
+         <prom:Params>
+            <prom:Name>June_Batch_POPSQ_239</prom:Name>
+            <prom:Description>June_Batch_POPSQ_239</prom:Description>
+            <prom:TriggeringPromoId>5009672</prom:TriggeringPromoId>
+            <prom:Status>A</prom:Status>
+            <prom:TriggeringPromoStartDate>2017-05-26</prom:TriggeringPromoStartDate>
+            <prom:TriggeringPromoEndDate>2017-05-30</prom:TriggeringPromoEndDate>
+            <prom:MaxCustomerRedemption>1</prom:MaxCustomerRedemption>    
+         </prom:Params>
+      </prom:AddImmediatePromoCampaignRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Response
+++++++++
+
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <AddPromoCampaignResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+         </Status>
+         <PromoCampaignDetail TriggeringPromoId="5009672" RedemptionPromoId="5009672" RedemptionType="INSTANT_PROMOCODE" PromoCodeSource="STATIC">
+            <CampaignId>111</CampaignId>
+            <Name>June_Batch_POPSQ_239</Name>
+            <Description>June_Batch_POPSQ_239</Description>
+            <Status>A</Status>
+            <TriggeringPromoStartDate>2017-05-26</TriggeringPromoStartDate>
+            <TriggeringPromoEndDate>2017-05-30</TriggeringPromoEndDate>
+            <MaxCustomerRedemption>1</MaxCustomerRedemption>
+            <ModifiedBy>bvaishna</ModifiedBy>
+            <ModifiedDateStr>2017.05.26 at 01:44:52 PM EDT</ModifiedDateStr>
+         </PromoCampaignDetail>
+      </AddPromoCampaignResponse>
+   </S:Body>
+</S:Envelope>
+
+
+AddStaticPromoCode
+==================
+
+Request
++++++++
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prom="http://psp.idt.net/PromoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prom:AddStaticPromoCodeRequest>
+         <prom:Control>
+            <prom:User>aklock</prom:User>
+            <prom:UserType>SOAP</prom:UserType>
+         </prom:Control>
+         <prom:Params>
+            <prom:CampaignId>111</prom:CampaignId>
+            <prom:PromoCode>7JNBBQ</prom:PromoCode>
+         </prom:Params>
+      </prom:AddStaticPromoCodeRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+Response
++++++++++
+
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <AddStaticPromoCodeResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+            <Warnings>
+               <StatusMessage>AddStaticPromoCodeRequest is deprecated, it has been replaced by: AddStaticPromoCodesRequest.</StatusMessage>
+            </Warnings>
+         </Status>
+         <StaticPromoCodeDetail CampaignId="111" PromoId="5009672">
+            <PromoCode>7JNBBQ</PromoCode>
+         </StaticPromoCodeDetail>
+      </AddStaticPromoCodeResponse>
+   </S:Body>
+</S:Envelope>
+
+
+
+AddPromoIdMap
+=============
+
+Request
++++++++
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prom="http://psp.idt.net/PromoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prom:AddPromoIdMapRequest>
+         <prom:Control>
+            <prom:User>aklock</prom:User>
+            <prom:UserType>SOAP</prom:UserType>
+         </prom:Control>
+         <prom:Params>
+            <prom:PromoId>5009672</prom:PromoId>
+            <prom:Id>14072</prom:Id>
+         </prom:Params>
+      </prom:AddPromoIdMapRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+Response
+++++++++
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <AddPromoIdMapResponse xmlns="http://psp.idt.net/PromoService/">
+         <Status>
+            <ResultCode>0</ResultCode>
+            <ResultText>Success</ResultText>
+         </Status>
+         <PromoIdMapDetail PromoId="5009672">
+            <IdType>Z</IdType>
+            <Id>14072</Id>
+            <ModifiedBy>aklock</ModifiedBy>
+            <ModifiedDateStr>2017.05.26 at 01:48:13 PM EDT</ModifiedDateStr>
+         </PromoIdMapDetail>
+      </AddPromoIdMapResponse>
+   </S:Body>
+</S:Envelope>
+
+
+
+
+
+Code 2 for UAT: 7JNBB6
+
+
+
+BULK CREATION OF SECOND TEST CODDE
+===================================
+
+
+ixc@somoanm02:/home/tc/promoCodeSqlLoaderScripts> pwd
+/home/tc/promoCodeSqlLoaderScripts
+
+
+Input File: POPSQ239_JuneTest_Code
+Campaign ID: 111
+Promo ID: 5009672
+
+### Usage:
+###   ./load_promo_code_static.ksh \
+###         <oracle connection string> \
+###         <input data file path> \
+###         <target campaign id> \
+###         <target promo id>
+###
+
+./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ239_JuneTest_Code 111 5009672
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ170_May_Codes 110 5008910
+
+#
+# This script=./load_promo_code_static.ksh
+#
+# This script will combine the following passed in
+# information to generate an sqlldr input dat file, 
+# then invokes 'sqlldr' to batch insert the contents
+# inside the generated dat file to the PROMO_CODE_STATIC table.
+#
+#   1) input file path (it contains the to-be-added 
+#      static pormo codes; one code per row) 
+#   2) target compaign id
+#   3) target promo id
+#
+# The dynamically generated dat file will be always called: 
+#   promo_code_static.dat
+#
+# Its format is: 
+#   <promo code>|<campaign id>|<promo id> 
+#
+#.....................................................................
+     Input File : POPSQ239_JuneTest_Code
+    Campaign ID : 111 
+       Promo ID : 5009672
+
+Please confirm above information. Continue (y/n)? y
+About to generate the promo_code_static.dat file.
+About to bulk load promo_code_static data.
+
+SQL*Loader: Release 9.2.0.1.0 - Production on Tue May 30 13:27:13 2017
+
+Copyright (c) 1982, 2002, Oracle Corporation.  All rights reserved.
+
+Commit point reached - logical record count 7
+ixc@somoanm02:/home/tc/promoCodeSqlLoaderScripts> 
+
+
+
+BULK CREATION OF SECOND FULL BATCH 
+==================================
+
+-rw-rw-r--   1 ixc      debit      14686 May 30 15:19 POPSQ239_June_Codes
+-rwxrwxrwx   1 tc       oss         2086 May 30 15:20 run
+ixc@somoanm02:/home/tc/promoCodeSqlLoaderScripts> tail POPSQ239_June_Codes
+7JN95V
+7JN959
+7JN96Q
+7JN966
+7JN97Q
+7JN98B
+7JN98V
+7JN986
+7JN99P
+7JN996
+
+ixc@somoanm02:/home/tc/promoCodeSqlLoaderScripts> cat run
+### Usage:
+###   ./load_promo_code_static.ksh \
+###         <oracle connection string> \
+###         <input data file path> \
+###         <target campaign id> \
+###         <target promo id>
+###
+
+./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ239_June_Codes 111 5009672
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ239_JuneTest_Code 111 5009672
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ170_May_Codes 110 5008910
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ170_Test_Code 110 5008910
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ_164 109 5008692
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" POPSQ_149 106 5008552
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5482689_Feb_codes 95 5007289
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5355843_Dec_codes3 87 5005612
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5340570_Nov_codes 84 5005412
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5291564_Oct_Codes 79 5004870
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5247169_Sept_Codes 75 5004313
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5201953_Add_On 69 5003633
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5134697_July_Codes 55 5003133 
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5087420_Add_On 30 5002273
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5062135_Add_On 21 5001933
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5062135 21 5001933
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5022966_4 9 5001263
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5022966_3 9 5001263
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5022966_2 9 5001263
+
+#./load_promo_code_static.ksh "debit_admin/admin_debit@drscooter" TT_5022966_1 9 5001263
+ixc@somoanm02:/home/tc/promoCodeSqlLoaderScripts> 
+
+aklock@somoanm02:/home/tc/promoCodeSqlLoaderScripts> run
+
+#.....................................................................
+#
+# This script=./load_promo_code_static.ksh
+#
+# This script will combine the following passed in
+# information to generate an sqlldr input dat file, 
+# then invokes 'sqlldr' to batch insert the contents
+# inside the generated dat file to the PROMO_CODE_STATIC table.
+#
+#   1) input file path (it contains the to-be-added 
+#      static pormo codes; one code per row) 
+#   2) target compaign id
+#   3) target promo id
+#
+# The dynamically generated dat file will be always called: 
+#   promo_code_static.dat
+#
+# Its format is: 
+#   <promo code>|<campaign id>|<promo id> 
+#
+#.....................................................................
+     Input File : POPSQ239_June_Codes
+    Campaign ID : 111 
+       Promo ID : 5009672
+
+Please confirm above information. Continue (y/n)? y
+
+About to generate the promo_code_static.dat file.
+About to bulk load promo_code_static data.
+
+SQL*Loader: Release 9.2.0.1.0 - Production on Wed May 31 07:20:14 2017
+
+Copyright (c) 1982, 2002, Oracle Corporation.  All rights reserved.
+
+Commit point reached - logical record count 336
+Commit point reached - logical record count 666
+Commit point reached - logical record count 996
+Commit point reached - logical record count 1326
+Commit point reached - logical record count 1656
+Commit point reached - logical record count 1986
+Commit point reached - logical record count 2104
+aklock@somoanm02:/home/tc/promoCodeSqlLoaderScripts> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

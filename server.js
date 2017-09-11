@@ -91,6 +91,11 @@ var express                 = require("express"),
         res.redirect("/");
     });
 
+    app.get("/parser/:reqres", (req, res)=> {
+        const stuff = require("./xml.js")(req.params.reqres);
+        console.log(stuff);
+        res.send(stuff);
+    });
  
     http.listen(port,()=>{
         console.log("listening on port: "+port);
