@@ -26,7 +26,6 @@ var express                 = require("express"),
         port: 5432
     });
 
-
     // Middleware
     // =============================================================================
     
@@ -45,13 +44,10 @@ var express                 = require("express"),
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
     // the callback after google has authenticated the user
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-        client.connect()
-            .then(()=>{
                 client.query(psql("users").toString(), (err, result) => {
                     if (err) {
                         console.log("error getting all users");
                         console.log(err);
-                        disconnect(client);
                     } else {
                         console.log("success getting all users");
                         var activeUser = result.rows;
@@ -59,9 +55,9 @@ var express                 = require("express"),
                         console.log(activeUser);
                         if (activeUser.length) {
                             console.log("activeUser.length");
-                            disconnect(client);
+                        
                             req.logout();
-                            // disconnect(client);
+                        
                             res.redirect("/");
                         } else {
                             console.log("did not find an active user");
@@ -69,47 +65,37 @@ var express                 = require("express"),
                                 if (uErr) {
                                     console.log('problem updating user to active user');
                                     console.log(uErr);
-                                    disconnect(client);
+                        
                                 } else {
                                     req.user.active = true;
                                     console.log('success making user active');
                                     console.log(uRes);
-                                    disconnect(client);
+                        
                                     res.redirect("/login.html");
                                 }
                             });
                         }
                     }
                 });
-            })
-            .catch((connectError)=>{
-                console.log("cannot connect to PSQL");
-                console.log(connectError.stack);
-            });
     });
 
     app.get("/logout",(req, res)=>{
-        console.log('inside logout');
-        console.log(req.user);
+        
         if(req.user.active){
-            console.log("inside req.user.active")
-            client.connect()
-                .then(()=> {
+        
                     client.query(
                         psql("users").update("active", false).where("id", req.user.id).toString(),
                         (err, res) => {
                             if (err) {
                                 console.log('problem setting user to inactive');
                                 console.log(err);
-                                disconnect(client);
+        
                             } else {
                                 console.log("success setting user to inactive");
                                 console.log(res);
-                                disconnect(client);
+        
                             }
                         });
-                })
-                .catch(e => console.log("problem connecting\n"+e.stack));
         }
         req.logout();
         res.redirect("/");
@@ -120,23 +106,16 @@ var express                 = require("express"),
         console.log(stuff);
         res.send(stuff);
     });
-
-// getting the cookie from the client side
-    app.get('/api/user_data', function (req, res) {
-
-        if (req.user === undefined) {
-            // The user is not logged in
-            res.json({});
-        } else {
-            res.json({
-                username: req.user
-            });
-        }
-    });
  
     http.listen(port,()=>{
         console.log("listening on port: "+port);
-        // client.connect();
+        // trying to connect once
+        client.connect()
+            .then(() => {
+                console.log("connected to PSQL in serverjs");
+            })
+            .catch(e => console.log("problem connecting to PSQL in serverjs: \n" + e.stack));
+
     });
 
 module.exports = app;

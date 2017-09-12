@@ -12,45 +12,35 @@ var passport            = require("passport"),
                         }),
     GoogleStrategy      = require("passport-google-oauth").OAuth2Strategy;
 
-
-
-
 module.exports = (passport) => {
-    // pg.connect(dbURL, function (err, client) {
-    //     if (err) throw err;
     const { Pool, Client } = require('pg');
-
     const client = new Client({
         user: creds.soap.psql.userName,
         password: creds.soap.psql.password,
         database: 'soap',
         port: 5432
     });
-    
-    
+    // trying to connect once
+    client.connect()
+        .then(() => {
+            console.log("connected to PSQL in passportjs");
+        })
+        .catch(e => console.log("problem connecting to PSQL in passportJS: \n" + e.stack));
+
+
         passport.serializeUser(function (user, done) {
-            console.log("inside serializeUser");
-            // console.log(user);
             done(null, user.id);
         });
-        // used to deserialize the user
+
+        
         passport.deserializeUser(function (id, done) {
-            console.log("inside deserializedUser");
-            // client.connect()
-            // .then(()=> {
                 client.query(psql('users').where("id", id).toString(), (err, res) => {
                     if (err) {
-                        console.log("problem deserialize query")
-                        // disconnect(client);
                         done(null, false);
                     } else {
-                        console.log("success with deserialize query")
-                        // disconnect(client);
                         done(null, res.rows[0]);
                     }
                 });
-            // })
-            // .catch(e => console.log("deserializeUser prob connecting\n "+e.stack)); 
         });
 
         // =========================================================================
@@ -71,15 +61,11 @@ module.exports = (passport) => {
                     b = b.join('').replace(/,/g, '');
                     var newUser = {};
                     if (b === valid) {
-                        client.connect();
                         client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
                             if(err){
-                                disconnect(client);
                                 done(null, false);
                             } else {
                                 if(res.rows.length){
-                                    disconnect(client);
-                                    // found the user sending the first element in the row results.
                                     done(null, res.rows[0]);
                                 } else {
                                     // did not find the user...creating a new user.
@@ -91,10 +77,8 @@ module.exports = (passport) => {
                                     // Insert the new user to the DB
                                     client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes)=> {
                                         if(nErr){
-                                            disconnect(client);
                                             done(null, false);
                                         } else {
-                                            disconnect(client);
                                             done(null, newUser);
                                         }
                                     });
@@ -102,8 +86,6 @@ module.exports = (passport) => {
                             }
                         });
                     } else {
-                        console.log("not valid email: \n"+b)
-                        disconnect(client);
                         return done(null, false);
                     }
                 });
