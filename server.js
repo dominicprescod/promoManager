@@ -16,6 +16,10 @@ var express                 = require("express"),
                             }),
     http                    = require('http').Server(app),
     io                      = require('socket.io')(http),
+    errMessage              = {
+                                error: "",
+                                details: ""
+                            },
     port                    = process.env.PORT || 3000;
 
     const {Pool, Client} = require('pg');
@@ -46,31 +50,29 @@ var express                 = require("express"),
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
                 client.query(psql("users").toString(), (err, result) => {
                     if (err) {
-                        console.log("error getting all users");
-                        console.log(err);
+                        errMessage = {
+                            error: "error getting all users googleAuthCallback",
+                            details: err.message
+                        }
+                        res.send(errMessage);
                     } else {
-                        console.log("success getting all users");
                         var activeUser = result.rows;
                         activeUser = activeUser.filter((v, i, a) => v.active);
-                        console.log(activeUser);
                         if (activeUser.length) {
-                            console.log("activeUser.length");
-                        
+                        // replace when view only mode..
                             req.logout();
-                        
                             res.redirect("/");
                         } else {
-                            console.log("did not find an active user");
+                            // did not find an active user...making current user active.
                             client.query(psql("users").update('active', true).where('id', req.user.id).toString(), (uErr, uRes) => {
                                 if (uErr) {
-                                    console.log('problem updating user to active user');
-                                    console.log(uErr);
-                        
+                                    errMessage = {
+                                        error: "Issue updating user to active user",
+                                        details: uErr.message
+                                    }
+                                    res.send(uErr);
                                 } else {
                                     req.user.active = true;
-                                    console.log('success making user active');
-                                    console.log(uRes);
-                        
                                     res.redirect("/login.html");
                                 }
                             });
@@ -80,20 +82,21 @@ var express                 = require("express"),
     });
 
     app.get("/logout",(req, res)=>{
-        
+        // setting user to inactive if active
         if(req.user.active){
-        
                     client.query(
                         psql("users").update("active", false).where("id", req.user.id).toString(),
                         (err, res) => {
                             if (err) {
                                 console.log('problem setting user to inactive');
                                 console.log(err);
-        
+                                errMessage = {
+                                    error: "Problem setting user to inactive",
+                                    details: err.message
+                                }
+                                res.send(errMessage);
                             } else {
                                 console.log("success setting user to inactive");
-                                console.log(res);
-        
                             }
                         });
         }
@@ -114,7 +117,12 @@ var express                 = require("express"),
             .then(() => {
                 console.log("connected to PSQL in serverjs");
             })
-            .catch(e => console.log("problem connecting to PSQL in serverjs: \n" + e.stack));
+            .catch((e) => {
+                console.log("problem connecting to PSQL in serverjs: \n" + e.message);
+                console.log("shutting down the server");
+                process.exit()
+
+            });
 
     });
 
