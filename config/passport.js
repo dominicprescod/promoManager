@@ -28,12 +28,12 @@ module.exports = (passport) => {
         .catch(e => console.log("problem connecting to PSQL in passportJS: \n" + e.stack));
 
 
-        passport.serializeUser(function (user, done) {
+        passport.serializeUser((user, done) => {
             done(null, user.id);
         });
 
         
-        passport.deserializeUser(function (id, done) {
+        passport.deserializeUser((id, done) => {
                 client.query(psql('users').where("id", id).toString(), (err, res) => {
                     if (err) {
                         done(null, false);
@@ -51,8 +51,8 @@ module.exports = (passport) => {
             clientSecret: creds.soap.google.clientSecret,
             callbackURL: creds.soap.google.callbackURL,
         },
-            function (token, refreshToken, profile, done) {
-                process.nextTick(function () {
+            (token, refreshToken, profile, done) => {
+                process.nextTick(() => {
                     // Restricting access to IDT Employees
                     var valid = "idt.net";
                     var a = profile.emails[0].value;
@@ -61,7 +61,7 @@ module.exports = (passport) => {
                     b = b.join('').replace(/,/g, '');
                     var newUser = {};
                     if (b === valid) {
-                        client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res)=> {
+                        client.query(psql('users').where("email", profile.emails[0].value).toString(), (err, res) => {
                             if(err){
                                 done(null, false);
                             } else {
@@ -75,7 +75,7 @@ module.exports = (passport) => {
                                     newUser['last_name'] = profile.name.familyName;
                                     newUser['active'] = false;
                                     // Insert the new user to the DB
-                                    client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes)=> {
+                                    client.query(psql.insert(newUser).into('users').toString(), (nErr, nRes) => {
                                         if(nErr){
                                             done(null, false);
                                         } else {

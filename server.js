@@ -119,8 +119,7 @@ var express                 = require("express"),
             .catch((e) => {
                 console.log("problem connecting to PSQL in serverjs: \n" + e.message);
                 console.log("shutting down the server");
-                process.exit()
-
+                process.exit();
             });
 
     });
