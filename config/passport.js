@@ -1,6 +1,5 @@
 var passport            = require("passport"),
     guid                = require("../guid.js"),
-    disconnect          = require("../disconnect.js"),
     creds               = require(process.env.HOME+"/.creds/node/credentials.js"),
     dbURL               = process.env.DATABASE_URL || 'postgres://localhost:5432/soap',
     searchPath          = process.env.SEARCH_PATH || 'soap/public',

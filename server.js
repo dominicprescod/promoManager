@@ -31,7 +31,7 @@ var express                 = require("express"),
 
     // Middleware
     // =============================================================================
-    
+
     require('./config/passport.js')(passport);
     app.use(cookieParser());
     app.use(express.static('public'));
@@ -41,7 +41,7 @@ var express                 = require("express"),
     app.use(session({secret: "ilovescotchscotchyscotchscotch"}));
     app.use(passport.initialize());
     app.use(passport.session());
-    
+
 
     // Google OAuth2
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -108,7 +108,7 @@ var express                 = require("express"),
         console.log(stuff);
         res.send(stuff);
     });
- 
+
     http.listen(port,()=>{
         console.log("listening on port: "+port);
         // trying to connect once
