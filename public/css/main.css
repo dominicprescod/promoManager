@@ -8,67 +8,96 @@ body {
     height: 100vh;
 }
 
-header {
-  width: 100%;
-  height: 10%;
-}
-
-main {
-  width: 100%;
-  height: 80%;
-  background: pink;
-}
-footer {
-  width: 100%;
-  height: 10%;
-}
-
-#TagInfo {
-    width: 20%;
-    height: 100%;
-    box-sizing: border-box;
-    border-right: 1px solid white;
-}
-
-#TagInput {
-  border: none;
-  width: 100%;
-  height: 10%;
-  font-size: xx-large;
-  text-align: center;
-  border-top: 1px solid pink;
-}
-
-.attrList {
-  width: 100%;
-  height: 80%;
-  position: relative;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-
-.attrList li {
-  height: 5%;
-  width: 100%;
-}
-
-.attrList li input {
+#main {
   height: 100%;
-  width: 50%;
-  border: none;
-  float: right;
-  box-sizing: border-box;
-  border-right: 1px dashed pink;
+  width: 100%;
+  background: lavender;
 }
 
-.attrList button {
+#main_header {
+  /*position: relative;*/
+  height: 10%;
+  width: 100%;
+  background: white;
+  border-bottom: 2px dashed darkgrey;
+  box-sizing: border-box;
+}
+
+#main_header > h1 {
+  width: 100%;
+  height: 100%;
+  color: grey;
+  text-align: center;
+  /*position: absolute;
+  bottom: 0;
+  left: 50%;*/
+}
+
+#main_main {
+  /*margin-top: 5%;*/
+  width: 80%;
+  height: 75%;
+  background: lightgrey;
+  margin: 5% auto;
+}
+
+#main_main_left {
+  width: 20%;
+  margin-left: 5%;
+  height: 100%;
+  background: white;
+  box-sizing: border-box;
+  border: 1px dashed lightgrey;
+}
+
+#main_main_left_TagName {
+  border: none;
+  border-bottom: 1px dashed lightgrey;
+  /*margin-top: 5%;*/
+  height: 10%;
+  width: 100%;
+  color: grey;
+  font-size: xx-large;
+}
+
+#main_main_left_attrContainer {
+  /*margin-bottom: 5%;*/
+  position: relative;
+  width: 100%;
+  height: 90%;
+  background: green;
+}
+
+#main_main_left_attrContainer_ul {
+  list-style: none;
+  height: 90%;
+  width: 100%;
+  background: orange;
+  overflow: scroll;
+  box-sizing: border-box;
+}
+
+.main_main_left_attrContainer_ul_li {
+  width: 100%;
+  height: 10%;
+  background: white;
+}
+
+.main_main_left_attrContainer_ul_li_input {
+  width: 50%;
+  height: 100%;
+  float: right;
+}
+
+
+
+#main_main_left_attrContainer_button {
+  height: 10%;
+  width: 100%;
+  background: white;
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
   border: none;
-  background: white;
-  height: 5%;
-  font-size: large;
-  color: grey;
+  box-sizing: border-box;
 }
