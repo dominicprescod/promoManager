@@ -11,7 +11,7 @@ body {
 #main {
   height: 100%;
   width: 100%;
-  background: lavender;
+  /*background: lavender;*/
 }
 
 #main_header {
@@ -19,7 +19,7 @@ body {
   height: 10%;
   width: 100%;
   background: white;
-  border-bottom: 2px dashed darkgrey;
+  border-bottom: 1px solid lightgrey;
   box-sizing: border-box;
 }
 
@@ -37,7 +37,7 @@ body {
   /*margin-top: 5%;*/
   width: 80%;
   height: 75%;
-  background: lightgrey;
+  /*background: lightgrey;*/
   margin: 5% auto;
 }
 
@@ -45,9 +45,9 @@ body {
   width: 20%;
   margin-left: 5%;
   height: 100%;
-  background: lightgrey;
+  /*background: lightgrey;*/
   box-sizing: border-box;
-  border: 1px dashed white;
+  /*border: 1px dashed white;*/
   float: left;
 }
 
@@ -114,19 +114,31 @@ body {
   float: left;
   width: 50%;
   height: 100%;
-  background: whitesmoke;
+  /*background: whitesmoke;*/
 }
 
 #main_main_center_container {
   width: 80%;
   height: 100%;
   margin: 0 auto;
-  background: lightblue;
+  /*background: lightblue;*/
 }
 #main_main_center_container_input {
-  width: 75%;
-  margin: 0 auto;
+  width: 100%;
+  text-align: center;
   height: 30%;
   border: none;
-  border-bottom: 1px dashed lightgrey;
+  border-bottom: 5px solid lightgrey;
+  font-size: xx-large;
+  margin-top: 10%;
+}
+
+.main_main_center_container_button {
+  width: 100%;
+  height: 30%;
+  border: none;
+  background: white;
+  border-bottom: 5px solid lightgrey;
+  font-size: xx-large;
+  color: grey;
 }

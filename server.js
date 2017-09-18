@@ -109,6 +109,13 @@ var express                 = require("express"),
         res.send(stuff);
     });
 
+
+    app.get("/parseJsonFile", (req, res)=>{
+      var fs = require("fs");
+      var jsonFile = fs.readFileSync("/Users/dprescod/Downloads/idt-ittest-athena-2-2017-03-09-21-01-08-7a31f1d4-9607-40dd-aeb7-6df31b9a278c");
+      console.log(typeof(jsonFile))
+      res.send(JSON.parse(jsonFile));
+    })
     http.listen(port,()=>{
         console.log("listening on port: "+port);
         // trying to connect once
