@@ -11,33 +11,32 @@
         <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
         <link rel="stylesheet" href="css/main.css">
     </head>
-    <body>
-      <div id="main">
-        <header id="main_header">
-          <h1>Dashboard</h1>
-        </header>
-        <main id="main_main">
-          <div id="main_main_left">
-            <input type="text" placeholder="TagName" id="main_main_left_TagName">
-            <div id="main_main_left_attrContainer">
-              <ul id="main_main_left_attrContainer_ul">
-                <li class="main_main_left_attrContainer_ul_li">
-                  <input type="text" placeholder="attrName" class="main_main_left_attrContainer_ul_li_input">
-                  <input type="text" placeholder="attrValue" class="main_main_left_attrContainer_ul_li_input">
-                </li>
-              </ul>
-              <button type="button" name="button" id="main_main_left_attrContainer_button">Add Attribute</button>
-            </div>
-          </div>
-          <div id="main_main_center">
-            <div id="main_main_center_container">
-              <input type="text" placeholder="Value" id="main_main_center_container_input">
-                <button type="button" name="button" class="main_main_center_container_button">Child Element</button>
-                <button type="buttclasson" name="button" class="main_main_center_container_button">List Element</button>
-            </div>
-          </div>
-        </main>
-      </div>
+    <body id="body">
+      <!-- <header></header>
+      <main>
+        <div id="TagInfo">
+          <input type="text" placeholder="TagName" id="TagName">
+          <ul class="attrList">
+            <button type="button" name="button">+</button>
+            <li>
+              <input type="text" placeholder="AttrName" >
+              <input type="text" placeholder="AttrValue" >
+            </li>
+          </ul>
+          <input type="checkbox" placeholer="list" >
+
+        </div>
+      </main>
+      <footer></footer> -->
+      <input type="text" placeholder="TagName">
+      <select>
+        <option value="Child">Child</option>
+        <option value="Value" selected="selected">Value</option>
+        <option value="List">List</option>
+      </select>
+      <input type="text" placeholder="Value" >
+      <button type="button" >Sibling</button>
+      <input type="text">
     </body>
     <!-- <script src="js/main.js" type="text/babel"></script> -->
 </html>
