@@ -6,8 +6,7 @@ const Header = (props) => {
   )
 }
 
-class AttrContainer extends React.Component {
-    render() {
+const AttrContainer = (props) => {
       return (
         <div id="main_main_left_attrContainer">
           <ul id="main_main_left_attrContainer_ul">
@@ -19,18 +18,15 @@ class AttrContainer extends React.Component {
           <button type="button" name="button" id="main_main_left_attrContainer_button">Add Attribute</button>
         </div>
       );
-    }
 }
 
-class MainLeft extends React.Component {
-    render() {
+const MainLeft = (props) =>{
       return (
         <div id="main_main_left">
           <input placeholder="TagName" id="main_main_left_TagName" />
           <AttrContainer />
         </div>
       )
-    }
 }
 
 const MainCenter = (props) => {
@@ -54,15 +50,13 @@ const MainMain = (props) => {
   )
 }
 
-class Main extends React.Component {
-  render() {
+const Main = (props) => {
     return (
       <div id="main">
         <Header />
         <MainMain />
       </div>
     )
-  }
 }
 
 
