@@ -92,7 +92,7 @@ body {
 .main_main_left_attrContainer_ul_li_input {
   width: 50%;
   height: 100%;
-  float: right;
+  float: left;
   box-sizing: border-box;
   border: none;
   text-align: center;

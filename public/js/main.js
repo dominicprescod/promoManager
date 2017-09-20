@@ -6,18 +6,47 @@ const Header = (props) => {
   )
 }
 
-const AttrContainer = (props) => {
+const Attrs = (props) => {
+  return (
+    <ul id="main_main_left_attrContainer_ul">
+    {props.attrList.map((v,i,a)=>
+       <li className="main_main_left_attrContainer_ul_li" key={i}>
+        <input type="text" placeholder={Object.keys(v)[0]} className="main_main_left_attrContainer_ul_li_input" />
+        <input type="text" placeholder={v[Object.keys(v)[0]]} className="main_main_left_attrContainer_ul_li_input" />
+      </li>
+    )}xzf
+    </ul>
+  )
+}
+
+class AttrContainer extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      attrList: []
+    }
+  }
+    handleClick(){
+      var arr = this.state.attrList;
+      arr.push({newAttrName: "newAttrValue"});
+      this.setState({attrList: arr});
+    }
+
+    handleDataChange(data){
+
+    }
+    render() {
+      const {
+        attrList
+      } = this.state;
       return (
         <div id="main_main_left_attrContainer">
-          <ul id="main_main_left_attrContainer_ul">
-          <li className="main_main_left_attrContainer_ul_li">
-            <input type="text" placeholder="attrName" className="main_main_left_attrContainer_ul_li_input" />
-            <input type="text" placeholder="attrValue" className="main_main_left_attrContainer_ul_li_input" />
-          </li>
-          </ul>
-          <button type="button" name="button" id="main_main_left_attrContainer_button">Add Attribute</button>
+          <Attrs attrList={attrList} />
+          <button type="button" name="button" id="main_main_left_attrContainer_button" onClick={()=>{this.handleClick()}}>Add Attribute</button>
         </div>
       );
+    }
 }
 
 const MainLeft = (props) =>{
