@@ -6,6 +6,18 @@ const Header = (props) => {
   )
 }
 
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+    if (obj == null) return true;
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+    if (typeof obj !== "object") return true;
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+    return true;
+}
 
 class PopUp extends React.Component {
 
@@ -25,9 +37,21 @@ class PopUp extends React.Component {
 
     handleSubmit(event){
       this.props.cancelHandler();
-      this.props.addAttr(this.state);
-      this.setState({attrValue:"",attrName:""});
 
+      if(!isEmpty(this.props.editAttr)){
+        console.log("inside edit")
+        console.log(this.props.editAttr)
+        var updatedObj = {
+          attrName: this.state.attrName,
+          attrValue: this.state.attrValue,
+          index: this.props.editAttr.index
+        }
+        this.props.finishEdit(updatedObj);
+      } else {
+        console.log("inside add")
+        this.props.addAttr(this.state);
+      }
+      this.setState({attrValue:"",attrName:""});
     }
 
     render() {
@@ -56,11 +80,14 @@ const Attrs = (props) => {
   // Need to change PopUp to check if attribute exists before pushing new entry
   // <input type="text" placeholder={Object.keys(v)[0]} className="main_main_left_attrContainer_ul_li_input" />
   // <input type="text" placeholder={v[Object.keys(v)[0]]} className="main_main_left_attrContainer_ul_li_input" />
-
+  // const edit = (data) => {
+  //   console.log("inside edit");
+  //   console.log(data);
+  // }
   return (
     <ul id="main_main_left_attrContainer_ul">
     {props.attrList.map((v,i,a)=>
-       <li className="main_main_left_attrContainer_ul_li" key={i}>
+       <li className="main_main_left_attrContainer_ul_li" key={i} onClick={()=>{props.editAttr({attrName:Object.keys(v)[0],attrValue: v[Object.keys(v)[0]],index:i})}}>
         <p className="main_main_left_attrContainer_ul_li_input">{Object.keys(v)[0]}</p>
         <p className="main_main_left_attrContainer_ul_li_input">{v[Object.keys(v)[0]]}</p>
       </li>
@@ -72,7 +99,7 @@ const Attrs = (props) => {
 const AttrContainer = (props) => {
   return (
           <div id="main_main_left_attrContainer">
-            <Attrs attrList={props.attrList}/>
+            <Attrs attrList={props.attrList} editAttr={props.editAttr}/>
             <button type="button" name="button" id="main_main_left_attrContainer_button" onClick={props.showHandler}>Add Attribute</button>
           </div>
         );
@@ -82,7 +109,7 @@ const MainLeft = (props) =>{
       return (
         <div id="main_main_left">
           <input placeholder="TagName" id="main_main_left_TagName" />
-          <AttrContainer attrList={props.attrList} showHandler={props.showHandler}/>
+          <AttrContainer attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr}/>
         </div>
       )
 }
@@ -102,7 +129,7 @@ const MainCenter = (props) => {
 const MainMain = (props) => {
   return (
     <main id="main_main">
-      <MainLeft attrList={props.attrList} showHandler={props.showHandler}/>
+      <MainLeft attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr}/>
       <MainCenter />
     </main>
   )
@@ -114,15 +141,17 @@ class Main extends React.Component {
     this.state =  {
       attrList: [],
       getAttr: false,
-      attrName: "",
-      attrValue: ""
+      editAttr: {}
     }
     this.showHandler = this.showHandler.bind(this);
     this.cancelHandler = this.cancelHandler.bind(this);
     this.addAttr = this.addAttr.bind(this);
+    this.startEditAttr = this.startEditAttr.bind(this);
+    this.finishEdit = this.finishEdit.bind(this);
+
   }
 
-  cancelHandler(){this.setState({getAttr: false});}
+  cancelHandler(){this.setState({getAttr: false, editAttr: {}});}
   showHandler(){this.setState({getAttr: true})}
   addAttr(data){
 
@@ -133,18 +162,38 @@ class Main extends React.Component {
     this.setState({attrList:arr});
   }
 
+  startEditAttr(data){
+    console.log("inside startEditAttr");
+    console.log(data);
+    this.setState({
+      editAttr: data,
+      getAttr: true
+    });
+  }
+
+  finishEdit(data){
+    console.log("inside finishEdit")
+    console.log(data)
+    var attrList = this.state.attrList;
+    attrList[data.index] = {};
+    attrList[data.index][data.attrName] = data.attrValue;
+    delete attrList[data.index].index;
+    this.setState({attrList:attrList, editAttr: {}});
+  }
+
+
   render(){
     const {
       attrList,
       getAttr,
-      attrName,
-      attrValue
+      editAttr
     } = this.state;
 
     return (
       <div id="main">
         <Header />
         <MainMain
+          editAttr={this.startEditAttr}
           attrList={attrList}
           showHandler={this.showHandler}
         />
@@ -152,6 +201,8 @@ class Main extends React.Component {
           showMe={getAttr}
           cancelHandler={this.cancelHandler}
           addAttr={this.addAttr}
+          editAttr={editAttr}
+          finishEdit={this.finishEdit}
         />
       </div>
     )
