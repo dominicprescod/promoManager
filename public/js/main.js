@@ -51,12 +51,18 @@ class PopUp extends React.Component {
 }
 
 const Attrs = (props) => {
+  // allow the ability to edit entries
+  // On click show the PopUp with entries from the Attribute
+  // Need to change PopUp to check if attribute exists before pushing new entry
+  // <input type="text" placeholder={Object.keys(v)[0]} className="main_main_left_attrContainer_ul_li_input" />
+  // <input type="text" placeholder={v[Object.keys(v)[0]]} className="main_main_left_attrContainer_ul_li_input" />
+
   return (
     <ul id="main_main_left_attrContainer_ul">
     {props.attrList.map((v,i,a)=>
        <li className="main_main_left_attrContainer_ul_li" key={i}>
-        <input type="text" placeholder={Object.keys(v)[0]} className="main_main_left_attrContainer_ul_li_input" />
-        <input type="text" placeholder={v[Object.keys(v)[0]]} className="main_main_left_attrContainer_ul_li_input" />
+        <p className="main_main_left_attrContainer_ul_li_input">{Object.keys(v)[0]}</p>
+        <p className="main_main_left_attrContainer_ul_li_input">{v[Object.keys(v)[0]]}</p>
       </li>
     )}
     </ul>
