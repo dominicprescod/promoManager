@@ -13,8 +13,16 @@ const Children = (props) => {
 const Header = (props) => {
   return (
     <header id="main_header">
-      <h1>Children</h1>
-      <Children children={props.children}/>
+      <div id="main_header_left">
+        <h1 id="main_header_left_h1">TagName</h1>
+      </div>
+      <div id="main_header_center">
+        <h1 id="main_header_center_h1">Children</h1>
+        <Children children={props.children}/>
+      </div>
+      <div id="main_header_right">
+        <button id="main_header_right_button">Add Child Element</button>
+      </div>
     </header>
   )
 }
