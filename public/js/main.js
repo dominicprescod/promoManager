@@ -24,8 +24,8 @@ class PopUp extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        attrName: "",
-        attrValue: ""
+        attrName: isEmpty(this.props.editAttr) ? "" : this.props.editAttr.attrName,
+        attrValue: isEmpty(this.props.editAttr) ? "" : this.props.editAttr.attrValue
       }
       this.attrNameChange = this.attrNameChange.bind(this);
       this.attrValueChange = this.attrValueChange.bind(this);
@@ -138,10 +138,19 @@ const MainMain = (props) => {
 class Main extends React.Component {
   constructor(props){
     super(props);
-    this.state =  {
+    this.state =
+      tagName: "",
+      value: "",
+      children:[],
+      listElement: false,
       attrList: [],
       getAttr: false,
       editAttr: {}
+
+      // child elements can be list elements
+      // if ONE child element is a list other siblings MUST be list elements as well
+      // elements can ONLY have a VALUE or CHILDREN
+
     }
     this.showHandler = this.showHandler.bind(this);
     this.cancelHandler = this.cancelHandler.bind(this);
