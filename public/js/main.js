@@ -1,7 +1,20 @@
+const Children = (props) => {
+  return (
+    <ul id="children">
+    {props.children.map((v,i,a)=>{
+      console.log("inside children loop")
+      console.log(v);
+      return <li className="children_li" key={i}>{v.tagName}</li>
+    })}
+    </ul>
+  )
+}
+
 const Header = (props) => {
   return (
     <header id="main_header">
-      <h1> Dashboard</h1>
+      <h1>Children</h1>
+      <Children children={props.children}/>
     </header>
   )
 }
@@ -18,6 +31,7 @@ function isEmpty(obj) {
     }
     return true;
 }
+
 
 class PopUp extends React.Component {
 
@@ -138,10 +152,35 @@ const MainMain = (props) => {
 class Main extends React.Component {
   constructor(props){
     super(props);
-    this.state =
+    this.state = {
       tagName: "",
       value: "",
-      children:[],
+      children:[
+        {
+          tagName:"firstChild",
+          value:"",
+          children:[],
+          listElement: false
+        },
+        {
+          tagName:"secondChild",
+          value:"",
+          children:[],
+          listElement: false
+        },
+        {
+          tagName:"thirdChild",
+          value:"",
+          children:[],
+          listElement: false
+        },
+        {
+          tagName:"lastChild",
+          value:"",
+          children:[],
+          listElement: false
+        }
+      ],
       listElement: false,
       attrList: [],
       getAttr: false,
@@ -195,12 +234,13 @@ class Main extends React.Component {
     const {
       attrList,
       getAttr,
+      children,
       editAttr
     } = this.state;
 
     return (
       <div id="main">
-        <Header />
+        <Header children={children}/>
         <MainMain
           editAttr={this.startEditAttr}
           attrList={attrList}
