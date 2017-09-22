@@ -2,8 +2,6 @@ const Children = (props) => {
   return (
     <ul id="children">
     {props.children.map((v,i,a)=>{
-      console.log("inside children loop")
-      console.log(v);
       return <li className="children_li" key={i}>{v.tagName}</li>
     })}
     </ul>
@@ -136,23 +134,38 @@ const MainLeft = (props) =>{
       )
 }
 
-const MainCenter = (props) => {
-  return (
-    <div id="main_main_center">
-      <div id="main_main_center_container">
-        <input type="text" placeholder="Value" id="main_main_center_container_input"/>
-          <button type="button" name="button" className="main_main_center_container_button">Child Element</button>
-          <button type="buttclasson" name="button" className="main_main_center_container_button">List Element</button>
+class MainCenter extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      value: ""
+    }
+    this.valueChange = this.valueChange.bind(this);
+  }
+  // send value to the MAIN element
+  valueChange(data){
+    this.setState({value:data.target.value})
+    this.props.getValue({value:data.target.value});
+  }
+
+  render() {
+    return (
+      <div id="main_main_center">
+        <div id="main_main_center_container">
+          <input type="text" placeholder="Value" id="main_main_center_container_input" value={this.state.value} onChange={this.valueChange}/>
+            <button type="button" name="button" className="main_main_center_container_button" disabled={this.props.value != ""}>Child Element</button>
+            <button type="buttclasson" name="button" className="main_main_center_container_button" disabled={this.props.value != ""}>List Element</button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const MainMain = (props) => {
   return (
     <main id="main_main">
       <MainLeft attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr}/>
-      <MainCenter />
+      <MainCenter value={props.value} getValue={props.getValue}/>
     </main>
   )
 }
@@ -194,9 +207,14 @@ class Main extends React.Component {
       getAttr: false,
       editAttr: {}
 
-      // child elements can be list elements
-      // if ONE child element is a list other siblings MUST be list elements as well
-      // elements can ONLY have a VALUE or CHILDREN
+      /*
+      ########****RESTRICTIONS******########
+            .1 Cannot enter Child || List Element when a value is entererd
+            .2 List elements are child elements
+            .3 ALL Child elements MUST have a parent
+            .4 ABSOLUTE Parent element MUST have a requestId
+      */
+
 
     }
     this.showHandler = this.showHandler.bind(this);
@@ -204,6 +222,7 @@ class Main extends React.Component {
     this.addAttr = this.addAttr.bind(this);
     this.startEditAttr = this.startEditAttr.bind(this);
     this.finishEdit = this.finishEdit.bind(this);
+    this.getValue = this.getValue.bind(this);
 
   }
 
@@ -237,19 +256,25 @@ class Main extends React.Component {
     this.setState({attrList:attrList, editAttr: {}});
   }
 
+  getValue(data){
+      this.setState(data);
+  }
 
   render(){
     const {
       attrList,
       getAttr,
       children,
-      editAttr
+      editAttr,
+      value
     } = this.state;
 
     return (
       <div id="main">
         <Header children={children}/>
         <MainMain
+          getValue={this.getValue}
+          value={value}
           editAttr={this.startEditAttr}
           attrList={attrList}
           showHandler={this.showHandler}
