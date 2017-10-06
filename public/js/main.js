@@ -12,14 +12,14 @@ const Header = (props) => {
   return (
     <header id="main_header">
       <div id="main_header_left">
-        <h1 id="main_header_left_h1">TagName</h1>
+        <h1 id="main_header_left_h1">{props.tagName}</h1>
       </div>
       <div id="main_header_center">
         <h1 id="main_header_center_h1">Children</h1>
         <Children children={props.children}/>
       </div>
       <div id="main_header_right">
-        <button id="main_header_right_button">Add Child Element</button>
+        <button id="main_header_right_button">Sibling</button>
       </div>
     </header>
   )
@@ -95,15 +95,7 @@ class PopUp extends React.Component {
 }
 
 const Attrs = (props) => {
-  // allow the ability to edit entries
-  // On click show the PopUp with entries from the Attribute
-  // Need to change PopUp to check if attribute exists before pushing new entry
-  // <input type="text" placeholder={Object.keys(v)[0]} className="main_main_left_attrContainer_ul_li_input" />
-  // <input type="text" placeholder={v[Object.keys(v)[0]]} className="main_main_left_attrContainer_ul_li_input" />
-  // const edit = (data) => {
-  //   console.log("inside edit");
-  //   console.log(data);
-  // }
+
   return (
     <ul id="main_main_left_attrContainer_ul">
     {props.attrList.map((v,i,a)=>
@@ -126,9 +118,14 @@ const AttrContainer = (props) => {
 }
 
 const MainLeft = (props) =>{
+
+      let sendTagName = (event) => {
+        props.getTagName(event.target.value)
+      }
+
       return (
         <div id="main_main_left">
-          <input placeholder="TagName" id="main_main_left_TagName" />
+          <input placeholder="TagName" id="main_main_left_TagName" onChange={sendTagName}/>
           <AttrContainer attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr}/>
         </div>
       )
@@ -153,8 +150,8 @@ class MainCenter extends React.Component {
       <div id="main_main_center">
         <div id="main_main_center_container">
           <input type="text" placeholder="Value" id="main_main_center_container_input" value={this.state.value} onChange={this.valueChange}/>
-            <button type="button" name="button" className="main_main_center_container_button" disabled={this.props.value != ""}>Child Element</button>
-            <button type="buttclasson" name="button" className="main_main_center_container_button" disabled={this.props.value != ""}>List Element</button>
+            <button type="button" name="button" className="main_main_center_container_button" disabled={this.props.disable}>Child Element</button>
+            <button type="buttclasson" name="button" className="main_main_center_container_button" disabled={this.props.disable}>List Elements</button>
         </div>
       </div>
     )
@@ -164,8 +161,8 @@ class MainCenter extends React.Component {
 const MainMain = (props) => {
   return (
     <main id="main_main">
-      <MainLeft attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr}/>
-      <MainCenter value={props.value} getValue={props.getValue}/>
+      <MainLeft attrList={props.attrList} showHandler={props.showHandler} editAttr={props.editAttr} getTagName={props.getTagName}/>
+      <MainCenter value={props.value} getValue={props.getValue} disable={props.disable}/>
     </main>
   )
 }
@@ -174,7 +171,7 @@ class Main extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      tagName: "",
+      tagName: "TagName",
       value: "",
       children:[
         {
@@ -206,7 +203,6 @@ class Main extends React.Component {
       attrList: [],
       getAttr: false,
       editAttr: {}
-
       /*
       ########****RESTRICTIONS******########
             .1 Cannot enter Child || List Element when a value is entererd
@@ -214,16 +210,15 @@ class Main extends React.Component {
             .3 ALL Child elements MUST have a parent
             .4 ABSOLUTE Parent element MUST have a requestId
       */
-
-
     }
+
     this.showHandler = this.showHandler.bind(this);
     this.cancelHandler = this.cancelHandler.bind(this);
     this.addAttr = this.addAttr.bind(this);
     this.startEditAttr = this.startEditAttr.bind(this);
     this.finishEdit = this.finishEdit.bind(this);
     this.getValue = this.getValue.bind(this);
-
+    this.getTagName = this.getTagName.bind(this);
   }
 
   cancelHandler(){this.setState({getAttr: false, editAttr: {}});}
@@ -260,20 +255,27 @@ class Main extends React.Component {
       this.setState(data);
   }
 
+  getTagName(data){
+    this.setState({tagName: data})
+  }
+
   render(){
     const {
       attrList,
       getAttr,
       children,
       editAttr,
-      value
+      value,
+      tagName
     } = this.state;
 
     return (
       <div id="main">
-        <Header children={children}/>
+        <Header children={children} tagName={tagName}/>
         <MainMain
+          disable={value == "" ? false : true}
           getValue={this.getValue}
+          getTagName={this.getTagName}
           value={value}
           editAttr={this.startEditAttr}
           attrList={attrList}
